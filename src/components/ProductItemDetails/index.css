@@ -1,0 +1,105 @@
+/* Write your CSS here */
+
+.loader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-details {
+  border: 2px solid red;
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  border-radius: 10px;
+  height: 90vh;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.image-container {
+  border: 2px solid green;
+  margin: 15px;
+  height: 95%;
+}
+
+.details {
+  border: 2px solid black;
+  margin: 15px;
+  width: 60%;
+  padding: 20px;
+}
+
+.similar-details {
+  border: 2px solid yellow;
+  margin: 15px;
+  border-radius: 10px;
+  width: 80%;
+}
+
+.product-image {
+  width: 40%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.review-container {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid red;
+  width: 30%;
+  justify-content: space-between;
+  padding: 5px;
+  align-items: center;
+}
+
+.rating-symbol {
+  background-color: blue;
+  color: white;
+  border-radius: 5px;
+  height: 50px;
+  width: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+}
+
+p {
+  font-weight: 600;
+}
+
+.count-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border: 1px solid red;
+  width: 20%;
+  height: 10%;
+  margin: 15px;
+  align-items: center;
+}
+
+.button {
+  color: black;
+  height: 20px;
+  background-color: transparent;
+  font-weight: 500;
+}
+
+.add-to-cart {
+  background-color: blue;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  padding: 15px;
+  margin: 15px;
+}
