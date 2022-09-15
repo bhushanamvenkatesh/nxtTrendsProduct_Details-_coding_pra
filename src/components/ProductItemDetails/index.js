@@ -1,5 +1,5 @@
 // Write your code here
-
+import {BsDashSquare, BsPlusSquare} from 'react-icons/bs'
 import './index.css'
 import {Component} from 'react'
 import Cookies from 'js-cookie'
@@ -8,14 +8,27 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 import Header from '../Header'
 import SimilarProductItem from '../SimilarProductItem'
 
+const statusConstants = {
+  initial: 'INITIAL',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
+}
+
 class ProductItemDetails extends Component {
-  state = {productData: {}, isLoading: true}
+  state = {
+    productData: {},
+    // isLoading: true,
+    count: 1,
+    status: statusConstants.initial,
+  }
 
   componentDidMount() {
     this.getProductData()
   }
 
   getProductData = async () => {
+    this.setState({status: statusConstants.initial})
+
     const {match} = this.props
 
     const {params} = match
@@ -23,7 +36,7 @@ class ProductItemDetails extends Component {
     const token = Cookies.get('jwt_token')
     const url = `https://apis.ccbp.in/products/${id}`
     const options = {
-      method: 'GET',
+      // method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -37,6 +50,10 @@ class ProductItemDetails extends Component {
     if (response.ok !== true) {
       this.onFailure()
     }
+  }
+
+  onFailure = () => {
+    this.setState({status: statusConstants.failure})
   }
 
   getSimilarDataList = data => {
@@ -68,29 +85,37 @@ class ProductItemDetails extends Component {
       title: data.title,
       totalReviews: data.total_reviews,
     }
-    this.setState({isLoading: false})
 
     this.setState({
       productData: formattedData,
+      // isLoading: false,
+      status: statusConstants.success,
     })
   }
 
   renderLoader = () => (
-    <div className="loader">
+    <div className="loader" testid="loader">
       <Loader type="ThreeDots" color="#0b69ff" height={80} width={80} />
     </div>
   )
 
-  getSimilarProductsList = lista => (
-    <ui>
-      {lista.map(each => (
-        <SimilarProductItem each={each} />
-      ))}
-    </ui>
-  )
+  onClickInc = () => {
+    this.setState(prevState => ({
+      count: prevState.count + 1,
+    }))
+  }
+
+  onClickDecre = () => {
+    const {count} = this.state
+    if (count > 1) {
+      this.setState(prevState => ({
+        count: prevState.count - 1,
+      }))
+    }
+  }
 
   renderProductData = () => {
-    const {productData} = this.state
+    const {productData, count} = this.state
 
     const {
       availability,
@@ -111,7 +136,7 @@ class ProductItemDetails extends Component {
         <Header />
         <div className="product-container">
           <div className="product-details">
-            <img src={imageUrl} alt={title} className="product-image" />
+            <img src={imageUrl} alt="product" className="product-image" />
 
             <div className="details">
               <h1>{title}</h1>
@@ -125,12 +150,23 @@ class ProductItemDetails extends Component {
               <p>Brand: {brand}</p>
               <hr />
               <div className="count-button">
-                <button className="button" type="button">
-                  +
+                <button
+                  type="button"
+                  onClick={this.onClickDecre}
+                  className="button"
+                  testid="minus"
+                >
+                  <BsDashSquare />
                 </button>
-                <h1>0</h1>
-                <button type="button" className="button">
-                  -
+
+                <p>{count}</p>
+                <button
+                  className="button"
+                  type="button"
+                  onClick={this.onClickInc}
+                  testid="plus"
+                >
+                  <BsPlusSquare />
                 </button>
               </div>
               <button className="add-to-cart" type="button">
@@ -141,19 +177,50 @@ class ProductItemDetails extends Component {
           <div className="similar-details">
             <h1>Similar Products</h1>
 
-            {this.getSimilarProductsList(similarProducts)}
-
-            <SimilarProductItem />
+            <SimilarProductItem similarProducts={similarProducts} />
           </div>
         </div>
       </>
     )
   }
 
-  render() {
-    const {isLoading} = this.state
+  onClickContinueShopping = () => {
+    const {history} = this.props
+    history.replace('/products')
+  }
 
-    return isLoading ? this.renderLoader() : this.renderProductData()
+  renderFailure = () => (
+    <div>
+      <Header />
+      <img
+        src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-error-view-img.png"
+        alt="failure view"
+        className=""
+      />
+      <h1>Product Not Found</h1>
+      <button type="button" onClick={this.onClickContinueShopping}>
+        Continue Shopping
+      </button>
+    </div>
+  )
+
+  render() {
+    const {status} = this.state
+
+    switch (status) {
+      case statusConstants.initial:
+        return this.renderLoader()
+
+      case statusConstants.failure:
+        return this.renderFailure()
+      case statusConstants.success:
+        return this.renderProductData()
+
+      default:
+        return null
+    }
+
+    // return isLoading ? this.renderLoader() : this.renderProductData()
   }
 }
 

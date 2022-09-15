@@ -1,1 +1,47 @@
 /* Write your CSS here */
+
+.similar-product-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 10px;
+  width: 30%;
+  height: 80%;
+
+  padding: 15px;
+  margin: 15px;
+}
+
+.similar-product-image {
+  width: 100%;
+  border-radius: 5px;
+  height: 80%;
+}
+
+.similar-products-list {
+  list-style: none;
+  padding: 0px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.star {
+  color: white;
+  margin: 5px;
+}
+.price-rating {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.rating-containers {
+  background-color: blue;
+  border-radius: 5px;
+  width: 30%;
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
